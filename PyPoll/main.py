@@ -31,7 +31,7 @@ with open('Resources/election_data.csv', 'r') as csvfile:
             
   
 for candidate_name, votes in poll_results.items():
-    percent_vote[candidate_name] = round((votes/vote_tally)*100,4)
+    percent_vote[candidate_name] = round((votes/vote_tally)*100, 2)
     if votes > winner_tally:
         winner_tally = votes
         winner = candidate_name

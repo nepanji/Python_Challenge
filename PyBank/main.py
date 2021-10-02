@@ -1,17 +1,13 @@
 # Import CSV cmdlet to create custom objects from the items in the CSV file to make parsing info easier.
 import csv
-# Import os cmdlet to navigate the file system to look up anc change file variables 
-import os
-
-# Create an os independent file path to read the csv file
-csvpath = os.path.join('Resources','budget_data.csv')
-
+from os import lseek
+lseek
 # Open the file
-with open(csvpath, 'r', newline="") as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=",")
+with open('Resources/budget_data.csv', 'r') as csvfile:
+    bank_data = csv.reader(csvfile)
         
     # Read the header row
-    next(csvreader)
+    next(bank_data)
 
     # Create empty lists for budget data
     months = []
@@ -23,7 +19,7 @@ with open(csvpath, 'r', newline="") as csvfile:
     change_diff = 0
 
     # Read through the csv file
-    for x in csvreader:
+    for x in bank_data:
         
         months.append(x[0])
         profit_loss.append(int(x[1]))
@@ -45,7 +41,7 @@ with open(csvpath, 'r', newline="") as csvfile:
     # Define variables for equations to calculate length of months and sum of profit loss
     total_mos = len(months)
     total_profit_loss = sum(profit_loss)
-    avg_change =sum(pl_change)/len(pl_change)
+    avg_change =round(sum(pl_change)/len(pl_change), 2)
     max_increase_pl = max(pl_change)
     min_increase_pl = min(pl_change)
     
@@ -57,31 +53,21 @@ with open(csvpath, 'r', newline="") as csvfile:
     # print(min_increase_dt)
 
     # Make Finanacial Analysis chart
-    print(f" ")
-    print(f"Financial Analysis")
-    print(f"--------------------------------------------")
-    print(f"Total Months: {total_mos}")
-    print(f"Total: ${total_profit_loss}")
-    print(f"Average Change: ${avg_change}")
-    print(f"Greatest Increase in Profits: {new_month[int(max_increase_dt)]} (${max_increase_pl})")
-    print(f"Greatest Decrease in Profits: {new_month[int(min_increase_dt)]} (${min_increase_pl})")
-    print(f" ")
+
+    financial_analysis = f"""
+    Financial Analysis
+    --------------------------------------------
+    Total Months: {total_mos}
+    Total: ${total_profit_loss}
+    Average Change: ${avg_change}
+    Greatest Increase in Profits: {new_month[int(max_increase_dt)]} (${max_increase_pl})
+    Greatest Decrease in Profits: {new_month[int(min_increase_dt)]} (${min_increase_pl})
+    """
   
-
+    print(financial_analysis)
    
-    # Create a text file 
-    output = os.path.join('bank_data.txt')
-
-    with open(output, "w") as textfile:
-        textfile.write(
-            print(f"Financial Analysis")
-            print(f"--------------------------------------------")
-            print(f"Total Months: {total_mos}")
-            print(f"Total: ${total_profit_loss}")
-            print(f"Average Change: ${avg_change}")
-            print(f"Greatest Increase in Profits: {new_month[int(max_increase_dt)]} (${max_increase_pl})")
-            print(f"Greatest Decrease in Profits: {new_month[int(min_increase_dt)]} (${min_increase_pl})")
-        )  
+    with open('Analysis/financial_results.txt', 'w') as txtfile:
+        txtfile.write(financial_analysis)
 
 
        
