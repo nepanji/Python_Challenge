@@ -1,7 +1,6 @@
 # Import CSV cmdlet to create custom objects from the items in the CSV file to make parsing info easier.
 import csv
-from os import lseek
-lseek
+
 # Open the file
 with open('Resources/budget_data.csv', 'r') as csvfile:
     bank_data = csv.reader(csvfile)
